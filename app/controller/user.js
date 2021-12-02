@@ -102,7 +102,7 @@ class UserController extends Controller {
   }
   async editUserInfo() {
     const { ctx, app } = this;
-    const { signature = '' } = ctx.request.body;
+    const { signature = '', avatar = '' } = ctx.request.body;
     try {
       let user_id = '';
       const token = ctx.request.header.authorization; // 请求头获取 authorization 属性，值为 token
@@ -114,16 +114,18 @@ class UserController extends Controller {
       const result = await ctx.service.user.editUserInfo({
         ...userInfo,
         signature,
+        avatar,
       });
       if (!result) {
         return;
       }
       ctx.body = {
         code: 200,
-        msg: '请求成功',
+        msg: '修改成功',
         data: {
           id: user_id,
           signature,
+          avatar,
           username: userInfo.username,
         },
       };
